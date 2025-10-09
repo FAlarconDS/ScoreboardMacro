@@ -254,6 +254,21 @@
         .view-fullscreen #balloons-container-front {
             display: none;
         }
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+            border-radius: inherit;
+            z-index: 5;
+            mix-blend-mode: overlay;
+            opacity: 0.8;
+        }
+        .view-fullscreen .card-overlay {
+            display: none;
+        }
         .balloon {
             position: absolute;
             background-color: #ffcc00;
@@ -332,14 +347,14 @@
         <div class="balloon balloon-9"></div>
         <div class="balloon balloon-10"></div>
         <div class="balloon balloon-11"></div>
+        <div class="balloon balloon-12"></div>
+        <div class="balloon balloon-13"></div>
+        <div class="balloon balloon-15"></div>
     </div>
     <div id="balloons-container-front">
         <div class="balloon balloon-3"></div>
         <div class="balloon balloon-7"></div>
-        <div class="balloon balloon-12"></div>
-        <div class="balloon balloon-13"></div>
         <div class="balloon balloon-14"></div>
-        <div class="balloon balloon-15"></div>
     </div>
     <button id="view-toggle-btn" class="fixed top-4 right-4 z-50 p-2 bg-black bg-opacity-20 rounded-full text-white hover:bg-opacity-30 transition-colors">
         <svg class="w-6 h-6 expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5"></path></svg>
@@ -360,9 +375,9 @@
         </footer>
     </div>
     <div id="fullscreen-footer">
-        <footer class="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
-            <button id="declare-winner-btn-fullscreen" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 text-base rounded-full shadow-lg transform transition-transform duration-200 hover:scale-105">
-                Declarar Ganador
+        <footer class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+            <button id="declare-winner-btn-fullscreen" class="bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-full shadow-lg transform transition-transform duration-200 hover:scale-105 w-16 h-16 flex items-center justify-center text-4xl">
+                🏆
             </button>
         </footer>
     </div>
@@ -396,7 +411,7 @@
                 name: "70's",
                 subtitle: 'Alianza Amarilla',
                 score: 0,
-                bgColor: 'bg-yellow-400',
+                bgColor: 'bg-amber-400',
                 textColor: 'text-white',
                 titleClass: 'title-70s'
             }, {
@@ -451,7 +466,8 @@
                 teams.forEach(team => {
                     const teamCard = `
                         <div id="card-${team.id}" class="team-card ${team.bgColor} flex flex-col justify-between transition-transform duration-300 relative">
-                           <div class="main-content-wrapper flex flex-col items-center justify-around flex-grow">
+                           <div class="card-overlay"></div>
+                           <div class="main-content-wrapper flex flex-col items-center justify-around flex-grow relative z-10">
                                 <div class="leading-icon"></div>
                                 <div class="text-center z-10 title-container">
                                     <h2 class="${team.titleClass}">${team.name}</h2>
@@ -459,7 +475,7 @@
                                 </div>
                                 <div class="score-display font-black ${team.textColor} z-10" id="score-${team.id}" data-team-id="${team.id}">${team.score}</div>
                            </div>
-                            <div class="flex w-full z-10">
+                            <div class="flex w-full relative z-10">
                                 <button data-team-id="${team.id}" data-action="subtract" class="score-btn w-1/2 font-bold bg-white bg-opacity-20 hover:bg-opacity-30 ${team.textColor} flex items-center justify-center transition-colors border-r border-white/10">-</button>
                                 <button data-team-id="${team.id}" data-action="add" class="score-btn w-1/2 font-bold bg-white bg-opacity-20 hover:bg-opacity-30 ${team.textColor} flex items-center justify-center transition-colors">+</button>
                             </div>
@@ -547,6 +563,7 @@
                     winnerNameEl.className = `text-8xl font-black mb-6 ${textColor} text-shadow-strong`;
                     winnerScoreEl.className = `text-3xl ${textColor} text-shadow-strong`;
                     winnerModal.classList.remove('hidden');
+
                     launchContinuousConfetti();
                 }
             }
